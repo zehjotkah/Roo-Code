@@ -120,6 +120,31 @@ describe("ClaudeCodeHandler", () => {
 			expect(model.id).toBe("claude-haiku-4-5")
 			expect(model.info.contextWindow).toBe(200_000)
 		})
+
+		it("should expose claude-opus-4-7 with native 1M context and 128k max output", () => {
+			const handler = new ClaudeCodeHandler({
+				apiModelId: "claude-opus-4-7",
+			})
+			const model = handler.getModel()
+			expect(model.id).toBe("claude-opus-4-7")
+			expect(model.info.contextWindow).toBe(1_000_000)
+			expect(model.info.maxTokens).toBe(128_000)
+			// Opus 4.7 uses adaptive thinking (no explicit extended-thinking controls).
+			expect(model.info.supportsReasoningEffort).toBeUndefined()
+		})
+
+		it("should keep claude-opus-4-7 context window at 1M regardless of claudeCode1MContext flag", () => {
+			const handlerOn = new ClaudeCodeHandler({
+				apiModelId: "claude-opus-4-7",
+				claudeCode1MContext: true,
+			})
+			const handlerOff = new ClaudeCodeHandler({
+				apiModelId: "claude-opus-4-7",
+				claudeCode1MContext: false,
+			})
+			expect(handlerOn.getModel().info.contextWindow).toBe(1_000_000)
+			expect(handlerOff.getModel().info.contextWindow).toBe(1_000_000)
+		})
 	})
 
 	describe("createMessage - 1M context beta", () => {
@@ -221,6 +246,33 @@ describe("ClaudeCodeHandler", () => {
 
 			const handler = new ClaudeCodeHandler({
 				apiModelId: "claude-sonnet-4-5",
+				claudeCode1MContext: true,
+			})
+
+			const stream = handler.createMessage(systemPrompt, messages)
+			for await (const _chunk of stream) {
+				// Consume stream
+			}
+
+			expect(mockCreateStreamingMessage).toHaveBeenCalledTimes(1)
+			const callArgs = mockCreateStreamingMessage.mock.calls[0][0]
+			expect(callArgs.additionalBetas).toBeUndefined()
+		})
+
+		it("should NOT include context-1m-2025-08-07 beta for claude-opus-4-7 (1M is native)", async () => {
+			mockCreateStreamingMessage.mockReturnValue(
+				createMockStream([
+					{ type: "text", text: "Hello" },
+					{
+						type: "usage",
+						inputTokens: 10,
+						outputTokens: 5,
+					},
+				]),
+			)
+
+			const handler = new ClaudeCodeHandler({
+				apiModelId: "claude-opus-4-7",
 				claudeCode1MContext: true,
 			})
 

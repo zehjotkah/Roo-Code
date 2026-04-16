@@ -87,7 +87,17 @@ export const claudeCodeModels = {
 		supportsPromptCache: true,
 		supportsReasoningEffort: ["disable", "low", "medium", "high"],
 		reasoningEffort: "medium",
-		description: "Claude Opus 4.6 - Most capable, latest with thinking",
+		description: "Claude Opus 4.6 - Most capable with thinking",
+	},
+	"claude-opus-4-7": {
+		// Anthropic spec: 1M-token native context window, 128k max output, adaptive thinking
+		// (no extended thinking toggle). Claude Code is subscription-based so pricing fields stay 0.
+		maxTokens: 128_000,
+		contextWindow: 1_000_000,
+		supportsImages: true,
+		supportsPromptCache: true,
+		description:
+			"Claude Opus 4.7 - Most capable generally available model for complex reasoning and agentic coding (adaptive thinking, 1M context)",
 	},
 } as const satisfies Record<string, ModelInfo>
 
