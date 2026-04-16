@@ -5,6 +5,7 @@ import {
 	type ModelRecord,
 	type RouterModels,
 	anthropicModels,
+	claudeCodeModels,
 	bedrockModels,
 	deepSeekModels,
 	moonshotModels,
@@ -334,6 +335,11 @@ function getSelectedModel({
 				defaultModelId,
 			)
 			const info = routerModels["vercel-ai-gateway"]?.[id]
+			return { id, info }
+		}
+		case "claude-code": {
+			const id = apiConfiguration.apiModelId ?? defaultModelId
+			const info = claudeCodeModels[id as keyof typeof claudeCodeModels]
 			return { id, info }
 		}
 		// case "anthropic":

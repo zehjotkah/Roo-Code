@@ -441,6 +441,8 @@
 		"awsBedrock1MContextBetaDescription": "Extends context window to 1 million tokens for Claude Sonnet 4.x / Claude Opus 4.6",
 		"vertex1MContextBetaLabel": "Enable 1M context window (Beta)",
 		"vertex1MContextBetaDescription": "Extends context window to 1 million tokens for Claude Sonnet 4.x / Claude Opus 4.6",
+		"claudeCode1MContextBetaLabel": "Enable 1M context window (Beta)",
+		"claudeCode1MContextBetaDescription": "Extends context window to 1 million tokens for Claude Sonnet 4.6 / Claude Opus 4.6. Long context pricing applies to requests exceeding 200K tokens.",
 		"basetenApiKey": "Baseten API Key",
 		"getBasetenApiKey": "Get Baseten API Key",
 		"fireworksApiKey": "Fireworks API Key",

@@ -121,6 +121,7 @@ export const PROVIDERS_WITH_CUSTOM_MODEL_UI: ProviderName[] = [
 	"unbound",
 	"openai", // OpenAI Compatible
 	"openai-codex", // OpenAI Codex has custom UI with auth and rate limits
+	"claude-code", // Claude Code has custom UI with auth and rate limits
 	"litellm",
 	"vercel-ai-gateway",
 	"roo",
